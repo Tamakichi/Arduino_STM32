@@ -95,14 +95,28 @@ This library has been modified for the Maple Mini
 #define ILI9341_GREENYELLOW 0xAFE5      /* 173, 255,  47 */
 #define ILI9341_PINK        0xF81F
 
+#define MODIFIED_TAMAKICHI 1
+
 class Adafruit_ILI9341_STM : public Adafruit_GFX_AS {
 
  public:
 
+#if MODIFIED_TAMAKICHI == 1
+  Adafruit_ILI9341_STM(int8_t _CS, int8_t _DC, int8_t _RST = -1, SPIClass & spi = SPI) ;
+  //<<-- 2018/07/01,Modified by Tamakichi
+  /*
   Adafruit_ILI9341_STM(int8_t _CS, int8_t _DC, int8_t _RST = -1);
-
   void     begin(SPIClass & spi, uint32_t freq=48000000);
   void     begin(void) { begin(SPI); }
+  */
+  void     begin(uint32_t freq=48000000);
+  //-->>
+#else
+  Adafruit_ILI9341_STM(int8_t _CS, int8_t _DC, int8_t _RST = -1);
+  void     begin(SPIClass & spi, uint32_t freq=48000000);
+  void     begin(void) { begin(SPI); }
+#endif
+  
   void     setAddrWindow(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1),
            pushColor(uint16_t color),
            pushColors(void * colorBuffer, uint16_t nr_pixels, uint8_t async=0),
@@ -154,12 +168,21 @@ class Adafruit_ILI9341_STM : public Adafruit_GFX_AS {
 
  private:
   uint32_t _freq, _safe_freq;
-  SPIClass & mSPI = SPI;
 
+#if MODIFIED_TAMAKICHI == 1
+//<<-- 2018/07/01,Modified by Tamakichi
+  //  SPIClass & mSPI = SPI;
+  SPIClass & mSPI;
+//-->>
+#else
+  SPIClass & mSPI = SPI;
+#endif
   volatile uint32_t *csport, *dcport;
   int8_t  _cs, _dc, _rst;
   uint16_t  cspinmask, dcpinmask;
-  uint16_t lineBuffer[ILI9341_TFTHEIGHT]; // DMA buffer. 16bit color data per pixel
+//<<-- 2018/07/06,Modified by Tamakichi
+//  uint16_t lineBuffer[ILI9341_TFTHEIGHT]; // DMA buffer. 16bit color data per pixel
+//-->>
 };
 
 
