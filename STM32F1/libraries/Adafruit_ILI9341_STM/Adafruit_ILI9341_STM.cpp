@@ -8,13 +8,33 @@ Includes DMA transfers on DMA1 CH2 and CH3.
 
 // Constructor when using hardware SPI.  Faster, but must use SPI pins
 // specific to each board type (e.g. 11,13 for Uno, 51,52 for Mega, etc.)
+#if MODIFIED_TAMAKICHI == 1
+//<<-- 2025/01/25,Modified by Tamakichi
+/*
+
 Adafruit_ILI9341_STM::Adafruit_ILI9341_STM(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX_AS(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT)
 {
   _cs   = cs;
   _dc   = dc;
   _rst  = rst;
 }
-
+*/
+Adafruit_ILI9341_STM::Adafruit_ILI9341_STM(int8_t cs, int8_t dc, int8_t rst, SPIClass & spi) 
+ : Adafruit_GFX_AS(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT),mSPI(spi) 
+{
+  _cs   = cs;
+  _dc   = dc;
+  _rst  = rst;
+}
+//-->>
+#else
+Adafruit_ILI9341_STM::Adafruit_ILI9341_STM(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX_AS(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT)
+{
+  _cs   = cs;
+  _dc   = dc;
+  _rst  = rst;
+}
+#endif
 
 void Adafruit_ILI9341_STM::writecommand(uint8_t c)
 {
@@ -57,11 +77,22 @@ void Adafruit_ILI9341_STM::commandList(uint8_t *addr)
     }
   }
 }
-
+#if MODIFIED_TAMAKICHI == 1
+//<<-- 2025/01/25,Modified by Tamakichi
+/*
 
 void Adafruit_ILI9341_STM::begin(SPIClass & spi, uint32_t freq)
 {
   mSPI = spi;
+*/
+void Adafruit_ILI9341_STM::begin(uint32_t freq)
+{
+//-->>  
+#else
+void Adafruit_ILI9341_STM::begin(SPIClass & spi, uint32_t freq)
+{
+  mSPI = spi;
+#endif  
   _freq = freq;
   _safe_freq = (freq>SAFE_FREQ) ? SAFE_FREQ : _freq;
   pinMode(_dc, OUTPUT);
@@ -71,7 +102,6 @@ void Adafruit_ILI9341_STM::begin(SPIClass & spi, uint32_t freq)
   cs_set(); // deactivate chip
   dcport    = portSetRegister(_dc);
   dcpinmask = digitalPinToBitMask(_dc);
-
   mSPI.beginTransaction(SPISettings(_safe_freq, MSBFIRST, SPI_MODE0, DATA_SIZE_8BIT));
 
   // toggle RST low to reset
@@ -210,7 +240,6 @@ void Adafruit_ILI9341_STM::begin(SPIClass & spi, uint32_t freq)
 
   _width  = ILI9341_TFTWIDTH;
   _height = ILI9341_TFTHEIGHT;
-
   mSPI.beginTransaction(SPISettings(_freq, MSBFIRST, SPI_MODE0, DATA_SIZE_16BIT));
 
 }
@@ -265,6 +294,10 @@ void Adafruit_ILI9341_STM::drawPixel(int16_t x, int16_t y, uint16_t color)
 void Adafruit_ILI9341_STM::drawFastVLine(int16_t x, int16_t y, int16_t h,
                                         uint16_t color)
 {
+//<<-- 2025/01/25,Modified by Tamakichi
+  uint16_t lineBuffer[1];
+//-->>
+  
   // Rudimentary clipping
   if ((x >= _width) || (y >= _height || h < 1)) return;
   if ((y + h - 1) >= _height)
@@ -289,6 +322,10 @@ void Adafruit_ILI9341_STM::drawFastVLine(int16_t x, int16_t y, int16_t h,
 void Adafruit_ILI9341_STM::drawFastHLine(int16_t x, int16_t y, int16_t w,
                                         uint16_t color)
 {
+//<<-- 2025/01/25,Modified by Tamakichi
+  uint16_t lineBuffer[1];
+//-->>
+  
   // Rudimentary clipping
   if ((x >= _width) || (y >= _height || w < 1)) return;
   if ((x + w - 1) >= _width)  w = _width - x;
@@ -310,6 +347,10 @@ void Adafruit_ILI9341_STM::drawFastHLine(int16_t x, int16_t y, int16_t w,
 
 void Adafruit_ILI9341_STM::fillScreen(uint16_t color)
 {
+//<<-- 2025/01/25,Modified by Tamakichi
+  uint16_t lineBuffer[1];
+//-->>
+  
   lineBuffer[0] = color;
   setAddrWindow(0, 0, _width - 1, _height - 1);
   uint32_t nr_bytes = _width * _height;
@@ -325,6 +366,10 @@ void Adafruit_ILI9341_STM::fillScreen(uint16_t color)
 void Adafruit_ILI9341_STM::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
                                    uint16_t color)
 {
+//<<-- 2025/01/25,Modified by Tamakichi
+  uint16_t lineBuffer[1];
+//-->>
+  
   lineBuffer[0] = color;
   // rudimentary clipping (drawChar w/big text requires this)
   if ((x >= _width) || (y >= _height || h < 1 || w < 1)) return;
