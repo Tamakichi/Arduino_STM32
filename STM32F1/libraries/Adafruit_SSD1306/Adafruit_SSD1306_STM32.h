@@ -18,10 +18,10 @@ All text above, and the splash screen must be included in any redistribution
 
 #if ARDUINO >= 100
  #include "Arduino.h"
- #define WIRE_WRITE Wire.write
+ #define WIRE_WRITE HWIRE.write
 #else
  #include "WProgram.h"
-  #define WIRE_WRITE Wire.send
+  #define WIRE_WRITE HWIRE.send
 #endif
 /*
 #ifdef __SAM3X8E__
@@ -35,7 +35,7 @@ All text above, and the splash screen must be included in any redistribution
 //typedef volatile RwReg PortReg;
 // typedef uint32_t PortMask;
 #include <SPI.h>
-#include <Adafruit_GFX.h>
+#include <Adafruit_GFX_AS.h>
 
 #define BLACK 0
 #define WHITE 1
@@ -132,8 +132,8 @@ All text above, and the splash screen must be included in any redistribution
 
 class Adafruit_SSD1306 : public Adafruit_GFX {
  public:
-  Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
-  Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS);
+  //Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
+  Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS, uint8_t _spidev = 1); // 2017/09/12 modified by Tamakichi 
   Adafruit_SSD1306(int8_t RST);
 
   void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS, bool reset=true);
@@ -143,7 +143,8 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
   void clearDisplay(void);
   void invertDisplay(uint8_t i);
   void display();
-
+  uint8_t* VRAM(); // 2017/9/19 Tamakichi
+  
   void startscrollright(uint8_t start, uint8_t stop);
   void startscrollleft(uint8_t start, uint8_t stop);
 
@@ -154,13 +155,16 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
   void dim(boolean dim);
 
   void drawPixel(int16_t x, int16_t y, uint16_t color);
-
+  uint16_t getPixel(int16_t x, int16_t y); // 2017/9/19 Tamakichi
+  
   virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
 
  private:
   int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs;
   void fastSPIwrite(uint8_t c);
+  uint8_t  spidev; // 2017/9/12 Tamakichi
+
 
   boolean hwSPI;
 volatile uint32 *mosiport, *clkport, *csport, *dcport;
