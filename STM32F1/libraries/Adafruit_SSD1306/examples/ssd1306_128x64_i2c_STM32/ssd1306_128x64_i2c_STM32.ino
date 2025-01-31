@@ -23,7 +23,7 @@ All text above, and the splash screen must be included in any redistribution
 *********************************************************************/
 
 
-#include <Adafruit_SSD1306_STM32_TT.h>
+#include <Adafruit_SSD1306_STM32.h>
 
 #define OLED_RESET -1
 Adafruit_SSD1306 display(OLED_RESET);
