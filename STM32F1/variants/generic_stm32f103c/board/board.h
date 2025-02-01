@@ -53,13 +53,18 @@
 #define BOARD_SPI1_MISO_PIN       PA6
 #define BOARD_SPI1_SCK_PIN        PA5
 
+#define BOARD_SPI1_ALT_NSS_PIN    PA15
+#define BOARD_SPI1_ALT_MOSI_PIN   PB5
+#define BOARD_SPI1_ALT_MISO_PIN   PB4
+#define BOARD_SPI1_ALT_SCK_PIN    PB3
+
 #define BOARD_SPI2_NSS_PIN        PB12
 #define BOARD_SPI2_MOSI_PIN       PB15
 #define BOARD_SPI2_MISO_PIN       PB14
 #define BOARD_SPI2_SCK_PIN        PB13
 
 #define BOARD_NR_GPIO_PINS        35
-#define BOARD_NR_PWM_PINS         12
+#define BOARD_NR_PWM_PINS         16
 #define BOARD_NR_ADC_PINS          9
 #define BOARD_NR_USED_PINS         4
 

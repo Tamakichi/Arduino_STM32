@@ -1,8 +1,13 @@
-## Arduino STM32(2019/02/03 V1.0.0beta)のスナップショット  
+## Arduino STM32(2024/09/04 commit245b97a)の修正バージョン
 
-- オリジナルへの修正 Adafruit_ILI9341_STMの不具合対応  
+- オリジナルへの修正 Adafruit_ILI9341_STM、Adafruit_SSD1306の不具合対応  
+- platform.txtの修正:compiler.path={runtime.tools.arm-none-eabi-gcc-4.8.3-2014q1.path}/bin/  
+- jssc.jar の差し替え(jssc-2.9.6.jar)  
+- platform.local.txtの追加  
 
-以下原文  
+以下原文
+=======
+
 
 Arduino STM32
 =============
@@ -17,11 +22,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## Summary:
 This repo contains the "Hardware" files to support STM32 based boards on Arduino version 1.8.x (some older versions may also work) including [LeafLabs Maple, and Maple mini](http://www.leaflabs.com/about-maple/), and other generic STM32F103 boards.
 
-***PRIMARY SUPPORT FORUM: http://www.stm32duino.com/***
-
-***We are also on Gitter https://gitter.im/stm32duino/Lobby/***
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/stm32duino/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ## Background & Support:
 * Based on https://github.com/bobc/maple-asp, which is in turn based on LibMaple by Leaflabs
 * **Please read the wiki (https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki) for full details**
@@ -29,11 +29,10 @@ This repo contains the "Hardware" files to support STM32 based boards on Arduino
 * **NEW: Main support site for using STM32 boards with the Arduino IDE: http://www.stm32duino.com/**
 * Original LeafLabs "Docs:" http://docs.leaflabs.com/docs.leaflabs.com/index.html
 
+## Known issues
+* Use of static variables inside functions greatly increase the code size becuase additional code is needed for thread-safe handling of these statics.
+If this is a problem for your application, please edit platform.txt and add -fno-threadsafe-statics the compiler.cpp.flags 
 
-**YouTube Videos:**
-* 20141116: [Arduino 1.5.8 IDE with STM32 board](https://www.youtube.com/watch?v=-zwGnytGT8M)
-* 20150413: [STM32 for Arduino 1.6.2 or newer (update)](https://www.youtube.com/watch?v=TePglhSkghg)
-* 20150419: [Uploading via USB to Serial to STM32F103 boards](https://www.youtube.com/watch?v=G_RF0a0hrak)
 
 ## Additional Links & Info:
 * https://www.hackster.io/rayburne/4-dollar-90-mips-32-bit-72-mhz-arm-arduino

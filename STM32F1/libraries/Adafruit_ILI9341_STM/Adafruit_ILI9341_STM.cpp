@@ -9,7 +9,7 @@ Includes DMA transfers on DMA1 CH2 and CH3.
 // Constructor when using hardware SPI.  Faster, but must use SPI pins
 // specific to each board type (e.g. 11,13 for Uno, 51,52 for Mega, etc.)
 #if MODIFIED_TAMAKICHI == 1
-//<<-- 2018/07/01,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
 /*
 
 Adafruit_ILI9341_STM::Adafruit_ILI9341_STM(int8_t cs, int8_t dc, int8_t rst) : Adafruit_GFX_AS(ILI9341_TFTWIDTH, ILI9341_TFTHEIGHT)
@@ -78,7 +78,7 @@ void Adafruit_ILI9341_STM::commandList(uint8_t *addr)
   }
 }
 #if MODIFIED_TAMAKICHI == 1
-//<<-- 2018/07/01,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
 /*
 
 void Adafruit_ILI9341_STM::begin(SPIClass & spi, uint32_t freq)
@@ -294,7 +294,7 @@ void Adafruit_ILI9341_STM::drawPixel(int16_t x, int16_t y, uint16_t color)
 void Adafruit_ILI9341_STM::drawFastVLine(int16_t x, int16_t y, int16_t h,
                                         uint16_t color)
 {
-//<<-- 2018/07/06,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
   uint16_t lineBuffer[1];
 //-->>
   
@@ -309,7 +309,7 @@ void Adafruit_ILI9341_STM::drawFastVLine(int16_t x, int16_t y, int16_t h,
 
   setAddrWindow(x, y, x, y + h - 1);
 
-  if (h>DMA_ON_LIMIT) {
+  if (h>ILI9341_STM_DMA_ON_LIMIT) {
     lineBuffer[0] = color;
     mSPI.dmaSend(lineBuffer, h, 0);
   } else {
@@ -322,7 +322,7 @@ void Adafruit_ILI9341_STM::drawFastVLine(int16_t x, int16_t y, int16_t h,
 void Adafruit_ILI9341_STM::drawFastHLine(int16_t x, int16_t y, int16_t w,
                                         uint16_t color)
 {
-//<<-- 2018/07/06,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
   uint16_t lineBuffer[1];
 //-->>
   
@@ -336,7 +336,7 @@ void Adafruit_ILI9341_STM::drawFastHLine(int16_t x, int16_t y, int16_t w,
 
   setAddrWindow(x, y, x + w - 1, y);
 
-  if (w>DMA_ON_LIMIT) {
+  if (w>ILI9341_STM_DMA_ON_LIMIT) {
     lineBuffer[0] = color;
     mSPI.dmaSend(lineBuffer, w, 0);
   } else {
@@ -347,7 +347,7 @@ void Adafruit_ILI9341_STM::drawFastHLine(int16_t x, int16_t y, int16_t w,
 
 void Adafruit_ILI9341_STM::fillScreen(uint16_t color)
 {
-//<<-- 2018/07/06,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
   uint16_t lineBuffer[1];
 //-->>
   
@@ -366,7 +366,7 @@ void Adafruit_ILI9341_STM::fillScreen(uint16_t color)
 void Adafruit_ILI9341_STM::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
                                    uint16_t color)
 {
-//<<-- 2018/07/06,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
   uint16_t lineBuffer[1];
 //-->>
   
@@ -382,7 +382,7 @@ void Adafruit_ILI9341_STM::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 
   setAddrWindow(x, y, x + w - 1, y + h - 1);
   uint32_t nr_bytes = w * h;
-  if ( nr_bytes>DMA_ON_LIMIT ) {
+  if ( nr_bytes>ILI9341_STM_DMA_ON_LIMIT ) {
     while ( nr_bytes>65535 ) {
       nr_bytes -= 65535;
       mSPI.dmaSend(lineBuffer, (65535), 0);

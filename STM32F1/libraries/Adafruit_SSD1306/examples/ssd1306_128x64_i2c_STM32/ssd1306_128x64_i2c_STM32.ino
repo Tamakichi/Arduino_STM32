@@ -1,7 +1,7 @@
 /*
 STM32 adaption by Matthias Diro, tested with maple mini and heltec OLED 12864 I2c; adress: 0x3C (SPI should work, but I didn't own one)
 Things to know:
- This adaption uses hardware I2C (now Wire.h), Port: I2c2. SDA=0, SCL=1 on maple mini
+ This adaption uses hardware I2C (hardwire.h), Port: I2c2. SDA=0, SCL=1 on maple mini
  further details: STM32_README.txt
 */
 /*********************************************************************
@@ -22,12 +22,10 @@ BSD license, check license.txt for more information
 All text above, and the splash screen must be included in any redistribution
 *********************************************************************/
 
-#include <SPI.h>
-#include <Wire.h>
-#include <Adafruit_GFX.h>
+
 #include <Adafruit_SSD1306_STM32.h>
 
-#define OLED_RESET 4
+#define OLED_RESET -1
 Adafruit_SSD1306 display(OLED_RESET);
 
 #define NUMFLAKES 10

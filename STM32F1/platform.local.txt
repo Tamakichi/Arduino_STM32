@@ -1,0 +1,5 @@
+# These can be overridden in platform.local.txt
+# OLED_DEV:0 SH1106, 1:SSD1306/SSD1309
+compiler.c.extra_flags=-DOLED_DEV=1
+compiler.cpp.extra_flags=-DOLED_DEV=1
+

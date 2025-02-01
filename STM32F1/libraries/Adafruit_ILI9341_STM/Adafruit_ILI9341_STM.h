@@ -103,7 +103,7 @@ class Adafruit_ILI9341_STM : public Adafruit_GFX_AS {
 
 #if MODIFIED_TAMAKICHI == 1
   Adafruit_ILI9341_STM(int8_t _CS, int8_t _DC, int8_t _RST = -1, SPIClass & spi = SPI) ;
-  //<<-- 2018/07/01,Modified by Tamakichi
+  //<<-- 2025/01/25,Modified by Tamakichi
   /*
   Adafruit_ILI9341_STM(int8_t _CS, int8_t _DC, int8_t _RST = -1);
   void     begin(SPIClass & spi, uint32_t freq=48000000);
@@ -142,7 +142,10 @@ class Adafruit_ILI9341_STM : public Adafruit_GFX_AS {
   uint32_t readcommand32(uint8_t);
   */
 
-#define DMA_ON_LIMIT 250 // do DMA only for more data than this
+#ifndef ILI9341_STM_DMA_ON_LIMIT
+#define ILI9341_STM_DMA_ON_LIMIT 250 // do DMA only for more data than this
+#endif
+
 #define SAFE_FREQ  24000000ul // 24MHz for reading
 
 #define writePixel drawPixel
@@ -170,7 +173,7 @@ class Adafruit_ILI9341_STM : public Adafruit_GFX_AS {
   uint32_t _freq, _safe_freq;
 
 #if MODIFIED_TAMAKICHI == 1
-//<<-- 2018/07/01,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
   //  SPIClass & mSPI = SPI;
   SPIClass & mSPI;
 //-->>
@@ -180,7 +183,7 @@ class Adafruit_ILI9341_STM : public Adafruit_GFX_AS {
   volatile uint32_t *csport, *dcport;
   int8_t  _cs, _dc, _rst;
   uint16_t  cspinmask, dcpinmask;
-//<<-- 2018/07/06,Modified by Tamakichi
+//<<-- 2025/01/25,Modified by Tamakichi
 //  uint16_t lineBuffer[ILI9341_TFTHEIGHT]; // DMA buffer. 16bit color data per pixel
 //-->>
 };

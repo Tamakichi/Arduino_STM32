@@ -158,14 +158,8 @@ private:
 
 
 /*
-    Should move this to within the class once tested out, just for tidyness
-*/
-static uint8_t ff = 0XFF;
-static void (*_spi1_this);
-static void (*_spi2_this);
-#if BOARD_NR_SPI >= 3
-static void (*_spi3_this);
-#endif
+ * Kept for compat.
+ */
 
 /**
  * @brief Wirish SPI interface.
@@ -280,6 +274,12 @@ public:
      */
     void write(const void * buffer, uint32 length);
 
+    // Some libraries (like recent Adafruit graphics libraries) require
+    // the write function be availabe under the name transfer, so here it is:
+    inline void transfer(const void * buffer, uint32 length) {
+     write(buffer, (uint32)length);
+    }
+ 
     /**
      * @brief Transmit a byte, then return the next unread byte.
      *
@@ -290,6 +290,9 @@ public:
      */
     uint8 transfer(uint8 data) const;
     uint16_t transfer16(uint16_t data) const;
+    void transfer(const uint8_t * tx_buf, uint8_t * rx_buf, uint32 len);
+    void transfer(uint8_t * trx_buf, uint32 len) { transfer((const uint8_t *)trx_buf, trx_buf, len); }
+
 
 	/**
      * @brief Sets up a DMA Transfer for "length" bytes.
@@ -302,6 +305,7 @@ public:
      * @param length Number of bytes in buffer to transmit.
 	 */
     uint8 dmaTransfer(const void * transmitBuf, void * receiveBuf, uint16 length);
+    uint8 dmaTransfer(const uint16 value, void * receiveBuf, uint16 length);
     void dmaTransferSet(const void *transmitBuf, void *receiveBuf);
     uint8 dmaTransferRepeat(uint16 length);
 
@@ -411,8 +415,12 @@ private:
 
     void EventCallback(void);
 
+    #if BOARD_NR_SPI >= 1
     static void _spi1EventCallback(void);
+    #endif
+    #if BOARD_NR_SPI >= 2
     static void _spi2EventCallback(void);
+    #endif
     #if BOARD_NR_SPI >= 3
     static void _spi3EventCallback(void);
     #endif
@@ -425,6 +433,14 @@ private:
 	*/
 };
 
+/**
+* @brief Waits unti TXE (tx empy) flag set and BSY (busy) flag unset.
+*/
+static inline void waitSpiTxEnd(spi_dev *spi_d)
+{
+    while (spi_is_tx_empty(spi_d) == 0); // wait until TXE=1
+    while (spi_is_busy(spi_d) != 0); // wait until BSY=0
+}
 
 extern SPIClass SPI;//(1);// dummy params
 #endif

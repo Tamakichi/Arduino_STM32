@@ -380,6 +380,7 @@ typedef enum afio_remap_peripheral {
 } afio_remap_peripheral;
 
 void afio_remap(afio_remap_peripheral p);
+int8_t afio_is_remapped(afio_remap_peripheral p);
 
 /**
  * @brief Debug port configuration
@@ -486,7 +487,7 @@ typedef exti_num afio_exti_num;
 /**
  * @brief Deprecated. Use exti_select(exti, port) instead.
  */
-static inline __always_inline void afio_exti_select(exti_num exti, exti_cfg port) {
+inline void afio_exti_select(exti_num exti, exti_cfg port) {
     exti_select(exti, port);
 }
 
