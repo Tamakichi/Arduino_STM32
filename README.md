@@ -1,8 +1,9 @@
 ## Arduino STM32(2024/09/04 commit245b97a)の修正バージョン
 
-- オリジナルへの修正 Adafruit_ILI9341_STMの不具合対応  
+- オリジナルへの修正 Adafruit_ILI9341_STM、Adafruit_SSD1306の不具合対応  
 - platform.txtの修正:compiler.path={runtime.tools.arm-none-eabi-gcc-4.8.3-2014q1.path}/bin/  
 - jssc.jar の差し替え(jssc-2.9.6.jar)  
+- platform.local.txtの追加  
 
 以下原文
 
