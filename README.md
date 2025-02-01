@@ -6,6 +6,8 @@
 - platform.local.txtの追加  
 
 以下原文
+=======
+
 
 Arduino STM32
 =============
